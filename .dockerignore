@@ -1,0 +1,10 @@
+.git
+.github
+.claude
+bin
+ui/node_modules
+ui/build
+ui/.svelte-kit
+.env
+*.md
+compose.yaml

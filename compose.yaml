@@ -1,0 +1,26 @@
+# Local stand-ins for the services a klickops project provides:
+# PostgreSQL and S3-compatible storage. `make services-up` to start,
+# then copy .env.example to .env.
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: app
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  s3:
+    image: chrislusf/seaweedfs
+    command: server -s3 -dir=/data
+    ports:
+      - "8333:8333"
+    volumes:
+      - s3data:/data
+
+volumes:
+  pgdata:
+  s3data:
