@@ -18,7 +18,7 @@ by whatever the user asks you to build.
   endpoints return 503 with a helpful hint - never panic, never require it.
 - **Storage**: any S3-compatible endpoint via `S3_*` env vars, optional,
   same graceful degradation.
-- Deployed on [klickops](https://klickops.com): push to GitHub, connect the
+- Deployed on [klickops](https://klickops.io): push to GitHub, connect the
   repo, klickops builds the Dockerfile and injects `DATABASE_URL` / `S3_*`
   by binding services. Keep the Dockerfile's `EXPOSE` and `ENV` lines - the
   platform reads them to suggest bindings.

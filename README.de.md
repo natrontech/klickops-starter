@@ -2,7 +2,7 @@
 
 Ein solider Startpunkt für deine eigene Web-App: **SvelteKit-Frontend und
 Go-Backend in einem einzigen Container**, mit optionaler **PostgreSQL-
-Datenbank** und **S3-Speicher**, genau so, wie [klickops](https://klickops.com)
+Datenbank** und **S3-Speicher**, genau so, wie [klickops](https://klickops.io)
 diese Dienste bereitstellt.
 
 Du musst kein Entwickler sein. Dieses Projekt ist dafür gebaut, mit

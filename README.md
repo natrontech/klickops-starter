@@ -4,7 +4,7 @@
 
 A rock-solid starting point for building a web app: **SvelteKit frontend + Go
 backend in a single container**, with optional **PostgreSQL** and **S3
-storage** wired the way [klickops](https://klickops.com) provides them.
+storage** wired the way [klickops](https://klickops.io) provides them.
 
 It is a seed, not a framework. Everything in here is meant to be understood
 in an afternoon and replaced by your own app. It ships with the guardrails
