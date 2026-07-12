@@ -33,7 +33,10 @@ rules, a feature recipe, tests, CI, and Dependabot.
 
 ## Quick start
 
-Use this repo as a GitHub template ("Use this template" button), then:
+Use this repo as a GitHub template ("Use this template" button), then either
+open your new repo in [GitHub Codespaces](https://github.com/features/codespaces)
+(the included devcontainer preinstalls Go, Node, pnpm, and Docker - no local
+setup at all) or work locally:
 
 ```bash
 git clone git@github.com:you/your-app.git
@@ -117,6 +120,7 @@ ui/src/routes/          SvelteKit pages (SPA)
 ui/src/lib/api/         typed fetch wrappers
 ui/src/lib/components/  design-system primitives
 .claude/                rules + skills that guide AI coding tools
+.devcontainer/          GitHub Codespaces / devcontainer setup
 ```
 
 ## Commands

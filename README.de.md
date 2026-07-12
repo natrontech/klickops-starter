@@ -28,7 +28,9 @@ Code hier aussieht.
 
 ## Lokal ausprobieren (optional)
 
-Wenn du es selbst starten willst (benötigt Go, Node/pnpm und Docker):
+Am einfachsten ohne Installation: Öffne dein Repository in GitHub
+Codespaces; die mitgelieferte Entwicklungsumgebung bringt alles mit.
+Oder lokal (benötigt Go, Node/pnpm und Docker):
 
 ```bash
 make install         # Abhängigkeiten installieren
