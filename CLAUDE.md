@@ -79,6 +79,8 @@ Full walkthrough: `.claude/skills/new-feature/SKILL.md`. Short version:
   rules, validation at the boundary.
 - Design: `.claude/rules/design.md` - tokens in `app.css`, component
   patterns, dark mode is automatic.
+- Git: `.claude/rules/git.md` - Conventional Commits, commit per coherent
+  unit once `make check && make test` pass, never batch unrelated changes.
 
 ## What NOT to do
 
