@@ -8,9 +8,11 @@
 		"ghcr.io/devcontainers/features/node:1": {
 			"version": "26"
 		},
-		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
+		"ghcr.io/devcontainers/features/github-cli:1": {},
+		"ghcr.io/anthropics/devcontainer-features/claude-code:1": {}
 	},
-	"postCreateCommand": "npm install -g pnpm@10 && make install",
+	"postCreateCommand": "sudo apt-get update && sudo apt-get install -y make && npm install -g pnpm@10 && make install",
 	"forwardPorts": [5173, 8080],
 	"portsAttributes": {
 		"5173": {

@@ -29,7 +29,8 @@ Code hier aussieht.
 ## Lokal ausprobieren (optional)
 
 Am einfachsten ohne Installation: Öffne dein Repository in GitHub
-Codespaces; die mitgelieferte Entwicklungsumgebung bringt alles mit.
+Codespaces; die mitgelieferte Entwicklungsumgebung bringt alles mit,
+inklusive Claude Code (tippe `claude` ins Terminal und leg los).
 Oder lokal (benötigt Go, Node/pnpm und Docker):
 
 ```bash

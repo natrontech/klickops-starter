@@ -35,8 +35,9 @@ rules, a feature recipe, tests, CI, and Dependabot.
 
 Use this repo as a GitHub template ("Use this template" button), then either
 open your new repo in [GitHub Codespaces](https://github.com/features/codespaces)
-(the included devcontainer preinstalls Go, Node, pnpm, and Docker - no local
-setup at all) or work locally:
+(the included devcontainer preinstalls Go, Node, pnpm, Docker, and the
+[Claude Code](https://claude.com/claude-code) CLI - type `claude` in the
+terminal and start building, no local setup at all) or work locally:
 
 ```bash
 git clone git@github.com:you/your-app.git
