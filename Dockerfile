@@ -17,7 +17,7 @@ RUN go mod download
 COPY . .
 RUN CGO_ENABLED=0 go build -o /server ./cmd/server
 
-FROM gcr.io/distroless/static-debian12:nonroot
+FROM gcr.io/distroless/static-debian13:nonroot
 WORKDIR /app
 COPY --from=backend /server /app/server
 COPY --from=ui /app/ui/build /app/ui/build
