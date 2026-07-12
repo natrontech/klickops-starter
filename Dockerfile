@@ -2,7 +2,7 @@
 # klickops smart-deploy reads the EXPOSE port and ENV keys below to
 # suggest the right port and service bindings automatically.
 
-FROM node:24-alpine AS ui
+FROM node:26-alpine AS ui
 WORKDIR /app/ui
 RUN npm install -g pnpm@10
 COPY ui/package.json ui/pnpm-lock.yaml ./
