@@ -25,11 +25,11 @@ COPY --from=ui /app/ui/build /app/ui/build
 ENV PORT=8080 \
     UI_DIR=/app/ui/build \
     DATABASE_URL="" \
-    S3_ENDPOINT="" \
-    S3_REGION="" \
+    AWS_ENDPOINT_URL_S3="" \
+    AWS_REGION="" \
     S3_BUCKET="" \
-    S3_ACCESS_KEY="" \
-    S3_SECRET_KEY=""
+    AWS_ACCESS_KEY_ID="" \
+    AWS_SECRET_ACCESS_KEY=""
 
 EXPOSE 8080
 USER nonroot

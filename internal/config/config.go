@@ -11,8 +11,9 @@ type Config struct {
 	S3          S3
 }
 
-// S3 holds object-storage credentials. On klickops these are injected by
-// binding a Bucket service to the app (see README "Deploy on klickops").
+// S3 holds object-storage credentials. The env names are the AWS-SDK
+// convention, which is exactly what a klickops Bucket binding injects —
+// binding a Bucket service to the app needs no further configuration.
 type S3 struct {
 	Endpoint  string
 	Region    string
@@ -29,11 +30,11 @@ func Load() Config {
 		DatabaseURL: os.Getenv("DATABASE_URL"),
 		UIDir:       getenv("UI_DIR", "ui/build"),
 		S3: S3{
-			Endpoint:  os.Getenv("S3_ENDPOINT"),
-			Region:    getenv("S3_REGION", "us-east-1"),
+			Endpoint:  os.Getenv("AWS_ENDPOINT_URL_S3"),
+			Region:    getenv("AWS_REGION", "us-east-1"),
 			Bucket:    os.Getenv("S3_BUCKET"),
-			AccessKey: os.Getenv("S3_ACCESS_KEY"),
-			SecretKey: os.Getenv("S3_SECRET_KEY"),
+			AccessKey: os.Getenv("AWS_ACCESS_KEY_ID"),
+			SecretKey: os.Getenv("AWS_SECRET_ACCESS_KEY"),
 		},
 	}
 }

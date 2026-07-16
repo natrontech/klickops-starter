@@ -80,16 +80,11 @@ to add a feature end to end (migration, handler, tests, UI). Ask it to run
 3. **Database**: add a PostgreSQL service to the project. klickops sees the
    `DATABASE_URL` variable declared in the Dockerfile and suggests the
    binding, accept it and the app connects and migrates on the next start.
-4. **Storage**: add a Bucket service and bind it to the app with these
-   outputs:
-
-   | Env var | Binding template |
-   |---|---|
-   | `S3_ENDPOINT` | `{{ .svc.endpoint }}` |
-   | `S3_REGION` | `{{ .svc.region }}` |
-   | `S3_BUCKET` | `{{ .svc.bucket }}` |
-   | `S3_ACCESS_KEY` | `{{ .svc.user }}` |
-   | `S3_SECRET_KEY` | `{{ .svc.password }}` |
+4. **Storage**: add a Bucket service and bind it to the app. The app reads
+   the standard AWS SDK variables the binding already injects
+   (`AWS_ENDPOINT_URL_S3`, `AWS_REGION`, `AWS_ACCESS_KEY_ID`,
+   `AWS_SECRET_ACCESS_KEY`, plus `S3_BUCKET`), so accept the suggested
+   binding and the files API works on the next start.
 
 No YAML, no kubectl. Any other container platform works too, the app only
 needs the env vars below.
@@ -103,10 +98,10 @@ Everything is an environment variable with a sensible default
 |---|---|---|
 | `PORT` | `8080` | HTTP listen port |
 | `DATABASE_URL` | *(unset)* | PostgreSQL connection string; unset = notes API disabled |
-| `S3_ENDPOINT` | *(unset)* | S3-compatible endpoint (`host:port` or URL) |
-| `S3_REGION` | `us-east-1` | S3 signing region |
+| `AWS_ENDPOINT_URL_S3` | *(unset)* | S3-compatible endpoint (`host:port` or URL) |
+| `AWS_REGION` | `us-east-1` | S3 signing region |
 | `S3_BUCKET` | *(unset)* | bucket name; unset = files API disabled |
-| `S3_ACCESS_KEY` / `S3_SECRET_KEY` | *(unset)* | bucket credentials |
+| `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` | *(unset)* | bucket credentials |
 | `UI_DIR` | `ui/build` | where the built SPA lives |
 
 ## Project structure

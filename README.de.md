@@ -48,8 +48,9 @@ make dev             # App auf http://localhost:5173
    URL und Zertifikat bereit.
 3. Eine **PostgreSQL**-Datenbank als Service hinzufügen; klickops schlägt
    die Verbindung (`DATABASE_URL`) automatisch vor.
-4. Einen **Bucket** (Dateispeicher) hinzufügen und die Zugangsdaten als
-   `S3_*`-Variablen an die App binden (Details in der englischen README).
+4. Einen **Bucket** (Dateispeicher) hinzufügen und die vorgeschlagene
+   Verbindung annehmen; die App liest die Standard-AWS-Variablen, die
+   klickops dabei setzt (Details in der englischen README).
 
 Fertig. Kein YAML, kein Kubernetes-Wissen nötig.
 

@@ -29,7 +29,7 @@ type BlobStore interface {
 
 const maxUploadBytes = 25 << 20 // 25 MiB
 
-const noStorageHint = "no storage bound - add a Bucket service to your klickops project and bind S3_ENDPOINT / S3_BUCKET / S3_ACCESS_KEY / S3_SECRET_KEY (locally: `docker compose up -d` and copy .env.example to .env)"
+const noStorageHint = "no storage bound - add a Bucket service to your klickops project and accept the suggested binding (locally: `docker compose up -d` and copy .env.example to .env)"
 
 func (s *Server) listFiles(w http.ResponseWriter, r *http.Request) {
 	if s.blobs == nil {

@@ -22,8 +22,17 @@ func TestLoadFromEnv(t *testing.T) {
 	t.Setenv("PORT", "9000")
 	t.Setenv("DATABASE_URL", "postgres://u:p@localhost/db")
 	t.Setenv("S3_BUCKET", "uploads")
+	t.Setenv("AWS_ENDPOINT_URL_S3", "rook-ceph-rgw:80")
+	t.Setenv("AWS_ACCESS_KEY_ID", "ak")
+	t.Setenv("AWS_SECRET_ACCESS_KEY", "sk")
 
 	cfg := Load()
+	if cfg.S3.Endpoint != "rook-ceph-rgw:80" {
+		t.Errorf("S3.Endpoint = %q", cfg.S3.Endpoint)
+	}
+	if cfg.S3.AccessKey != "ak" || cfg.S3.SecretKey != "sk" {
+		t.Errorf("S3 credentials not loaded: %+v", cfg.S3)
+	}
 	if cfg.Port != "9000" {
 		t.Errorf("Port = %q, want 9000", cfg.Port)
 	}
