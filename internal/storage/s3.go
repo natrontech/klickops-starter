@@ -9,6 +9,7 @@ import (
 	"io"
 	"log/slog"
 	"strings"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	awsconfig "github.com/aws/aws-sdk-go-v2/config"
@@ -59,7 +60,13 @@ func NormalizeEndpoint(endpoint string) string {
 // ensureBucket creates the bucket when it does not exist yet (local dev).
 // On klickops the bucket already exists and create may be denied - both
 // are fine, so failures only log.
+//
+// ponytail: hard 5s budget, because this runs before the server listens.
+// An unreachable endpoint (blocked egress, wrong host) otherwise burns
+// the SDK's full retry schedule and the app never serves a request.
 func (s *S3Store) ensureBucket(ctx context.Context) {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
 	if _, err := s.client.HeadBucket(ctx, &s3.HeadBucketInput{Bucket: &s.bucket}); err == nil {
 		return
 	}
