@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/natrontech/klickops-starter/internal/api"
+	"github.com/natrontech/klickops-starter/internal/cache"
 	"github.com/natrontech/klickops-starter/internal/config"
 	"github.com/natrontech/klickops-starter/internal/db"
 	"github.com/natrontech/klickops-starter/internal/storage"
@@ -39,6 +40,20 @@ func main() {
 		slog.Info("DATABASE_URL not set - notes API disabled")
 	}
 
+	var cacheStore api.CacheStore
+	if cfg.RedisURL != "" {
+		c, err := cache.Connect(ctx, cfg.RedisURL)
+		if err != nil {
+			slog.Error("failed to connect to cache", "error", err)
+			os.Exit(1)
+		}
+		defer c.Close()
+		cacheStore = c
+		slog.Info("cache connected")
+	} else {
+		slog.Info("REDIS_URL not set - cache disabled")
+	}
+
 	var blobs api.BlobStore
 	if cfg.S3.Enabled() {
 		store, err := storage.NewS3(ctx, cfg.S3)
@@ -54,7 +69,7 @@ func main() {
 
 	srv := &http.Server{
 		Addr:              ":" + cfg.Port,
-		Handler:           api.New(notes, blobs, cfg.UIDir),
+		Handler:           api.New(notes, blobs, cacheStore, cfg.UIDir),
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 

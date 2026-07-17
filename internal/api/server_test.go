@@ -14,7 +14,7 @@ func TestSPAFallback(t *testing.T) {
 	os.WriteFile(filepath.Join(dir, "index.html"), []byte("<html>app</html>"), 0o644)
 	os.WriteFile(filepath.Join(dir, "app.css"), []byte("body{}"), 0o644)
 
-	srv := New(nil, nil, dir)
+	srv := New(nil, nil, nil, dir)
 
 	tests := []struct {
 		path     string
@@ -38,7 +38,7 @@ func TestSPAFallback(t *testing.T) {
 
 func TestSPAMissingUIDir(t *testing.T) {
 	rec := httptest.NewRecorder()
-	New(nil, nil, "does-not-exist").ServeHTTP(rec, httptest.NewRequest("GET", "/", nil))
+	New(nil, nil, nil, "does-not-exist").ServeHTTP(rec, httptest.NewRequest("GET", "/", nil))
 	if rec.Code != http.StatusNotFound {
 		t.Errorf("status = %d, want 404", rec.Code)
 	}

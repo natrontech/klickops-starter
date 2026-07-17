@@ -1,6 +1,6 @@
 # Local stand-ins for the services a klickops project provides:
-# PostgreSQL and S3-compatible storage. `make services-up` to start,
-# then copy .env.example to .env.
+# PostgreSQL, S3-compatible storage and a Valkey cache. `make
+# services-up` to start, then copy .env.example to .env.
 services:
   postgres:
     image: postgres:17-alpine
@@ -20,6 +20,11 @@ services:
       - "8333:8333"
     volumes:
       - s3data:/data
+
+  valkey:
+    image: valkey/valkey:8.1
+    ports:
+      - "6379:6379"
 
 volumes:
   pgdata:

@@ -3,7 +3,7 @@
 [![ci](https://github.com/natrontech/klickops-starter/actions/workflows/ci.yml/badge.svg)](https://github.com/natrontech/klickops-starter/actions/workflows/ci.yml)
 
 A rock-solid starting point for building a web app: **SvelteKit frontend + Go
-backend in a single container**, with optional **PostgreSQL** and **S3
+backend in a single container**, with optional **PostgreSQL**, **Valkey** and **S3
 storage** wired the way [klickops](https://klickops.io) provides them.
 
 It is a seed, not a framework. Everything in here is meant to be understood
@@ -22,8 +22,9 @@ rules, a feature recipe, tests, CI, and Dependabot.
   and runs even before a database or bucket is bound.
 - **SvelteKit 5 + Tailwind 4 frontend** as a static SPA, with a small
   design-token system (automatic dark mode) and a few UI primitives.
-- **Working examples**: a notes CRUD (PostgreSQL) and file upload/download
-  (S3). Delete them once your real app takes shape.
+- **Working examples**: a notes CRUD (PostgreSQL), a visit counter and
+  cache-aside list caching (Valkey), and file upload/download (S3). Delete
+  them once your real app takes shape.
 - **AI guidance built in**: `CLAUDE.md`, `.claude/rules/`, and a
   step-by-step `new-feature` skill so Claude Code, Cursor, and friends
   extend the app idiomatically instead of inventing their own patterns.
@@ -52,7 +53,7 @@ database and storage sections show how to enable them.
 To develop with real services locally (needs Docker):
 
 ```bash
-make services-up          # PostgreSQL + S3-compatible server
+make services-up          # PostgreSQL + Valkey + S3-compatible server
 cp .env.example .env      # points at those services
 make dev
 ```
@@ -80,7 +81,10 @@ to add a feature end to end (migration, handler, tests, UI). Ask it to run
 3. **Database**: add a PostgreSQL service to the project. klickops sees the
    `DATABASE_URL` variable declared in the Dockerfile and suggests the
    binding, accept it and the app connects and migrates on the next start.
-4. **Storage**: add a Bucket service and bind it to the app. The app reads
+4. **Cache**: add a Valkey (Redis-compatible) service and connect it to the
+   app - the binding injects `REDIS_URL` and the visit counter plus notes
+   caching light up on the next start.
+5. **Storage**: add a Bucket service and bind it to the app. The app reads
    the standard AWS SDK variables the binding already injects
    (`AWS_ENDPOINT_URL_S3`, `AWS_REGION`, `AWS_ACCESS_KEY_ID`,
    `AWS_SECRET_ACCESS_KEY`, plus `S3_BUCKET`), so accept the suggested
@@ -98,6 +102,7 @@ Everything is an environment variable with a sensible default
 |---|---|---|
 | `PORT` | `8080` | HTTP listen port |
 | `DATABASE_URL` | *(unset)* | PostgreSQL connection string; unset = notes API disabled |
+| `REDIS_URL` | *(unset)* | Valkey/Redis connection URL; unset = cache + visits disabled |
 | `AWS_ENDPOINT_URL_S3` | *(unset)* | S3-compatible endpoint (`host:port` or URL) |
 | `AWS_REGION` | `us-east-1` | S3 signing region |
 | `S3_BUCKET` | *(unset)* | bucket name; unset = files API disabled |

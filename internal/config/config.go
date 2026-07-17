@@ -7,8 +7,11 @@ import "os"
 type Config struct {
 	Port        string
 	DatabaseURL string
-	UIDir       string
-	S3          S3
+	// RedisURL is what a klickops Valkey binding injects (REDIS_URL) —
+	// any Redis-compatible server works.
+	RedisURL string
+	UIDir    string
+	S3       S3
 }
 
 // S3 holds object-storage credentials. The env names are the AWS-SDK
@@ -28,6 +31,7 @@ func Load() Config {
 	return Config{
 		Port:        getenv("PORT", "8080"),
 		DatabaseURL: os.Getenv("DATABASE_URL"),
+		RedisURL:    os.Getenv("REDIS_URL"),
 		UIDir:       getenv("UI_DIR", "ui/build"),
 		S3: S3{
 			Endpoint:  os.Getenv("AWS_ENDPOINT_URL_S3"),

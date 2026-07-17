@@ -6,11 +6,13 @@
 	import { fetchHealth, type Health } from "$lib/api/health";
 	import { createNote, deleteNote, listNotes, type Note } from "$lib/api/notes";
 	import { deleteFile, fileUrl, listFiles, uploadFile, type FileInfo } from "$lib/api/files";
+	import { fetchVisits } from "$lib/api/visits";
 	import { formatBytes, formatDate } from "$lib/utils/format";
 
 	let health = $state<Health | null>(null);
 	let notes = $state<Note[]>([]);
 	let files = $state<FileInfo[]>([]);
+	let visits = $state<number | null>(null);
 	let newNote = $state("");
 	let noteError = $state("");
 	let fileError = $state("");
@@ -29,6 +31,7 @@
 		}
 		if (health.database) notes = await listNotes().catch(() => []);
 		if (health.storage) files = await listFiles().catch(() => []);
+		if (health.cache) visits = (await fetchVisits().catch(() => null))?.visits ?? null;
 	}
 
 	async function addNote(event: SubmitEvent) {
@@ -89,6 +92,9 @@
 			</Badge>
 			<Badge tone={health.storage ? "success" : "muted"}>
 				Storage {health.storage ? "connected" : "not bound"}
+			</Badge>
+			<Badge tone={health.cache ? "success" : "muted"}>
+				Cache {health.cache ? "connected" : "not bound"}
 			</Badge>
 		{:else}
 			<Badge tone="warning">API unreachable - is the backend running? (make dev-backend)</Badge>
@@ -167,6 +173,28 @@
 				bind its endpoint and credentials as
 				<code class="font-mono text-xs">S3_*</code> variables (see README). Locally:
 				<code class="font-mono text-xs">docker compose up -d</code> starts an S3-compatible server.
+			</p>
+		{/if}
+	</Card>
+
+	<Card
+		title="Cache"
+		description="A Valkey (Redis-compatible) example: a visit counter, plus the notes list above is served cache-aside with a 30s TTL."
+	>
+		{#if health?.cache}
+			<p class="text-sm">
+				You are visitor
+				<span class="font-mono font-semibold">#{visits ?? "…"}</span> - counted with an atomic
+				<code class="font-mono text-xs">INCR</code>. Reload to bump it. The notes list sets an
+				<code class="font-mono text-xs">X-Cache: hit|miss</code> response header - watch it flip
+				in the network tab.
+			</p>
+		{:else}
+			<p class="text-sm text-muted-foreground">
+				No cache bound. On klickops: add a <strong>Valkey</strong> service to your project and
+				connect it to this app - it injects
+				<code class="font-mono text-xs">REDIS_URL</code>. Locally:
+				<code class="font-mono text-xs">docker compose up -d</code> starts a Valkey server.
 			</p>
 		{/if}
 	</Card>

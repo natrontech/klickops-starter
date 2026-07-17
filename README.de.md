@@ -2,7 +2,7 @@
 
 Ein solider Startpunkt für deine eigene Web-App: **SvelteKit-Frontend und
 Go-Backend in einem einzigen Container**, mit optionaler **PostgreSQL-
-Datenbank** und **S3-Speicher**, genau so, wie [klickops](https://klickops.io)
+Datenbank**, **Valkey-Cache** und **S3-Speicher**, genau so, wie [klickops](https://klickops.io)
 diese Dienste bereitstellt.
 
 Du musst kein Entwickler sein. Dieses Projekt ist dafür gebaut, mit
@@ -48,7 +48,10 @@ make dev             # App auf http://localhost:5173
    URL und Zertifikat bereit.
 3. Eine **PostgreSQL**-Datenbank als Service hinzufügen; klickops schlägt
    die Verbindung (`DATABASE_URL`) automatisch vor.
-4. Einen **Bucket** (Dateispeicher) hinzufügen und die vorgeschlagene
+4. Einen **Valkey**-Cache (Redis-kompatibel) hinzufügen und mit der App
+   verbinden; klickops setzt `REDIS_URL` und Besucherzähler plus
+   Notiz-Caching funktionieren sofort.
+5. Einen **Bucket** (Dateispeicher) hinzufügen und die vorgeschlagene
    Verbindung annehmen; die App liest die Standard-AWS-Variablen, die
    klickops dabei setzt (Details in der englischen README).
 

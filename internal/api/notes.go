@@ -31,13 +31,20 @@ func (s *Server) listNotes(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusServiceUnavailable, noDatabaseHint)
 		return
 	}
-	notes, err := s.notes.ListNotes(r.Context())
+	notes, hit, err := s.cachedNotes(r.Context())
 	if err != nil {
 		internalError(w, "failed to list notes", err)
 		return
 	}
 	if notes == nil {
 		notes = []Note{}
+	}
+	if s.cache != nil {
+		if hit {
+			w.Header().Set("X-Cache", "hit")
+		} else {
+			w.Header().Set("X-Cache", "miss")
+		}
 	}
 	writeJSON(w, http.StatusOK, notes)
 }
@@ -68,6 +75,7 @@ func (s *Server) createNote(w http.ResponseWriter, r *http.Request) {
 		internalError(w, "failed to create note", err)
 		return
 	}
+	s.invalidateNotes(r.Context())
 	writeJSON(w, http.StatusCreated, note)
 }
 
@@ -85,5 +93,6 @@ func (s *Server) deleteNote(w http.ResponseWriter, r *http.Request) {
 		internalError(w, "failed to delete note", err)
 		return
 	}
+	s.invalidateNotes(r.Context())
 	w.WriteHeader(http.StatusNoContent)
 }

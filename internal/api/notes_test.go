@@ -34,7 +34,7 @@ func (f *fakeNotes) DeleteNote(ctx context.Context, id int64) error {
 }
 
 func newTestServer(notes NoteStore) http.Handler {
-	return New(notes, nil, "does-not-exist")
+	return New(notes, nil, nil, "does-not-exist")
 }
 
 func TestNotesCRUD(t *testing.T) {

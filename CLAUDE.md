@@ -1,7 +1,7 @@
 # klickops-starter
 
 A single-container full-stack web app: Go backend + SvelteKit frontend, with
-optional PostgreSQL and S3 storage. This is a seed for the user's own app -
+optional PostgreSQL, Valkey (Redis-compatible cache) and S3 storage. This is a seed for the user's own app -
 the notes/files demo exists to show the patterns and is MEANT to be replaced
 by whatever the user asks you to build.
 
@@ -14,6 +14,8 @@ by whatever the user asks you to build.
   with `index.html` fallback. Pure SPA - keep `ssr = false`.
 - **Backend** (`cmd/server`, `internal/`): Go stdlib `net/http` with 1.22+
   route patterns. No web framework.
+- **Cache**: Valkey/Redis via `REDIS_URL`, optional. When unset, the visit
+  counter and notes caching are disabled; everything else works.
 - **Database**: PostgreSQL via `DATABASE_URL`, optional. When unset, DB
   endpoints return 503 with a helpful hint - never panic, never require it.
 - **Storage**: any S3-compatible endpoint via `S3_*` env vars, optional,
@@ -28,7 +30,7 @@ by whatever the user asks you to build.
 ```bash
 make install         # frontend deps (pnpm)
 make dev             # backend :8080 + frontend :5173 (vite proxies /api)
-make services-up     # local PostgreSQL + S3 via docker compose
+make services-up     # local PostgreSQL + Valkey + S3 via docker compose
 make check           # go vet + svelte-check   - run after every change
 make test            # go test + vitest        - run after every change
 make lint            # gofmt + vet + prettier check
@@ -49,6 +51,7 @@ internal/api/          → HTTP handlers + store interfaces (NoteStore, BlobStor
 internal/db/           → pgx pool, migrations (embedded .sql), store impls
 internal/db/migrations → numbered .sql files, applied in order at startup
 internal/storage/      → S3 implementation of BlobStore
+internal/cache/        → Valkey implementation of CacheStore
 ui/src/routes/         → SvelteKit pages
 ui/src/lib/api/        → typed fetch wrappers (always via client.ts::api)
 ui/src/lib/components/ui/ → design-system primitives (Button, Card, Input, Badge)
