@@ -19,11 +19,17 @@ RUN CGO_ENABLED=0 go build -o /server ./cmd/server
 
 FROM gcr.io/distroless/static-debian13:nonroot
 WORKDIR /app
+
+# Stamped at build time (`docker build --build-arg GIT_SHA=$(git rev-parse --short HEAD)`)
+# and shown in the UI footer, so a preview environment says which commit it runs.
+ARG GIT_SHA=dev
 COPY --from=backend /server /app/server
 COPY --from=ui /app/ui/build /app/ui/build
 
 ENV PORT=8080 \
     UI_DIR=/app/ui/build \
+    APP_ENV=production \
+    GIT_SHA=${GIT_SHA} \
     DATABASE_URL="" \
     AWS_ENDPOINT_URL_S3="" \
     AWS_REGION="" \

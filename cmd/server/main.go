@@ -69,7 +69,7 @@ func main() {
 
 	srv := &http.Server{
 		Addr:              ":" + cfg.Port,
-		Handler:           api.New(notes, blobs, cacheStore, cfg.UIDir),
+		Handler:           api.New(notes, blobs, cacheStore, api.Build{Env: cfg.Env, GitSHA: cfg.GitSHA}, cfg.UIDir),
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 

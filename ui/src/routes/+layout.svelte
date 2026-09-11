@@ -2,8 +2,18 @@
 	import "../app.css";
 	import type { Snippet } from "svelte";
 	import Button from "$lib/components/ui/button.svelte";
+	import { fetchVersion, type Build } from "$lib/api/version";
 
 	let { children }: { children: Snippet } = $props();
+
+	let build = $state<Build | null>(null);
+
+	$effect(() => {
+		fetchVersion().then(
+			(b) => (build = b),
+			() => {}
+		);
+	});
 
 	// ponytail: native <dialog> + localStorage flag, no modal library, no store
 	let welcome = $state<HTMLDialogElement>();
@@ -57,8 +67,17 @@
 		{@render children()}
 	</main>
 
-	<footer class="border-t border-border/60 py-6 text-xs text-muted-foreground">
-		Built from the klickops starter - open this folder with your AI coding tool and describe what
-		you want to build.
+	<footer
+		class="flex flex-wrap items-center justify-between gap-3 border-t border-border/60 py-6 text-xs text-muted-foreground"
+	>
+		<span>
+			Built from the klickops starter - open this folder with your AI coding tool and describe what
+			you want to build.
+		</span>
+		{#if build}
+			<span class="font-mono text-[11px] whitespace-nowrap">
+				{build.env} · {build.gitSha}
+			</span>
+		{/if}
 	</footer>
 </div>
