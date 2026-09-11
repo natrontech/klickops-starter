@@ -17,14 +17,16 @@ type Server struct {
 	notes NoteStore  // nil when no database is bound
 	blobs BlobStore  // nil when no bucket is bound
 	cache CacheStore // nil when no Valkey is bound
+	build Build
 	uiDir string
 }
 
-func New(notes NoteStore, blobs BlobStore, cache CacheStore, uiDir string) http.Handler {
-	s := &Server{notes: notes, blobs: blobs, cache: cache, uiDir: uiDir}
+func New(notes NoteStore, blobs BlobStore, cache CacheStore, build Build, uiDir string) http.Handler {
+	s := &Server{notes: notes, blobs: blobs, cache: cache, build: build, uiDir: uiDir}
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /api/healthz", s.health)
+	mux.HandleFunc("GET /api/version", s.version)
 	mux.HandleFunc("GET /api/visits", s.visits)
 	mux.HandleFunc("GET /api/notes", s.listNotes)
 	mux.HandleFunc("POST /api/notes", s.createNote)

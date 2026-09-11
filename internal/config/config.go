@@ -7,6 +7,11 @@ import "os"
 type Config struct {
 	Port        string
 	DatabaseURL string
+	// Env and GitSHA identify the running build. They are runtime values,
+	// not baked into the binary, so the same image can serve a preview and
+	// production and still report which is which.
+	Env    string
+	GitSHA string
 	// RedisURL is what a klickops Valkey binding injects (REDIS_URL) —
 	// any Redis-compatible server works.
 	RedisURL string
@@ -31,6 +36,8 @@ func Load() Config {
 	return Config{
 		Port:        getenv("PORT", "8080"),
 		DatabaseURL: os.Getenv("DATABASE_URL"),
+		Env:         getenv("APP_ENV", "dev"),
+		GitSHA:      getenv("GIT_SHA", "dev"),
 		RedisURL:    os.Getenv("REDIS_URL"),
 		UIDir:       getenv("UI_DIR", "ui/build"),
 		S3: S3{

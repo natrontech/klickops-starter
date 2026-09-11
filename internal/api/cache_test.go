@@ -40,7 +40,7 @@ func (f *fakeCache) Del(ctx context.Context, key string) error {
 }
 
 func TestVisitsCounter(t *testing.T) {
-	srv := New(nil, nil, newFakeCache(), "does-not-exist")
+	srv := New(nil, nil, newFakeCache(), Build{}, "does-not-exist")
 
 	for want := 1; want <= 3; want++ {
 		rec := httptest.NewRecorder()
@@ -55,7 +55,7 @@ func TestVisitsCounter(t *testing.T) {
 }
 
 func TestVisitsWithoutCacheReturnsHint(t *testing.T) {
-	srv := New(nil, nil, nil, "does-not-exist")
+	srv := New(nil, nil, nil, Build{}, "does-not-exist")
 	rec := httptest.NewRecorder()
 	srv.ServeHTTP(rec, httptest.NewRequest("GET", "/api/visits", nil))
 	if rec.Code != http.StatusServiceUnavailable {
@@ -66,7 +66,7 @@ func TestVisitsWithoutCacheReturnsHint(t *testing.T) {
 func TestNotesListUsesCacheAside(t *testing.T) {
 	store := &fakeNotes{}
 	c := newFakeCache()
-	srv := New(store, nil, c, "does-not-exist")
+	srv := New(store, nil, c, Build{}, "does-not-exist")
 
 	// First list: miss (fills the cache).
 	rec := httptest.NewRecorder()
