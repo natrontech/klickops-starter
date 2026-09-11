@@ -186,8 +186,8 @@
 				You are visitor
 				<span class="font-mono font-semibold">#{visits ?? "…"}</span> - counted with an atomic
 				<code class="font-mono text-xs">INCR</code>. Reload to bump it. The notes list sets an
-				<code class="font-mono text-xs">X-Cache: hit|miss</code> response header - watch it flip
-				in the network tab.
+				<code class="font-mono text-xs">X-Cache: hit|miss</code> response header - watch it flip in the
+				network tab.
 			</p>
 		{:else}
 			<p class="text-sm text-muted-foreground">
